@@ -1,0 +1,102 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "md-wrecker"
+dynamic = ["version"]
+description = "Add/Remove paragraph hard/soft wraps in markdown files"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "AGPL-3.0-or-later" }
+authors = [{ name = "Uglyegg", email = "uglyegg@entropy.quest" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: POSIX :: Linux",
+  "Environment :: X11 Applications :: Qt",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Text Editors",
+  "Topic :: Text Processing :: Markup :: Markdown",
+  "Topic :: Software Development :: Version Control",
+]
+dependencies = [
+  "markdown>=3.9", # For Markdown rendering
+]
+
+[project.optional-dependencies]
+dev = [
+  "pre-commit",      # For pre-commit hooks
+  "pytest>=8.0",     # For testing
+  "pytest-cov>=4.0", # For code coverage
+  "ruff>=0.5.0",     # For static code analysis
+  "black>=24.0",     # For code formatting
+  "mypy>=1.8",       # For static type checking
+]
+docs = [
+  "sphinx>=8.0",           # For documentation generation
+  "sphinx-rtd-theme>=1.3", # For RTD theme
+  "myst-parser>=2.0.0",    # For Markdown parsing
+  "ghp-import>=2.1.0",     # For importing to GitHub Pages
+]
+
+[project.urls]
+"Homepage" = "https://github.com/UglyEgg/md-wrecker"
+"Documentation" = "https://uglyegg.github.io/md-wrecker/"
+
+[project.scripts]
+# md-wrecker = "md-wrecker.app.main_application:main"
+
+[project.gui-scripts]
+# GUI scripts configuration
+# ... existing code
+
+[tool.hatch.version]
+source = "code"
+path = "src/keystone_writer/app/version.py"
+
+[tool.hatch.build]
+
+[tool.hatch.build.targets.wheel]
+
+[tool.hatch.build.force-include]
+"src/keystone_writer/assets" = "md-wrecker/assets"
+"src/keystone_writer/VERSION" = "md-wrecker/VERSION"
+
+[tool.pytest.ini_options] # pytest configuration
+pythonpath = ["src"]  # Set the Python path for pytest
+asyncio_mode = "auto" # Enable asyncio mode for pytest
+
+[tool.black] # Black configuration
+line-length = 88           # Set the line length for Black
+target-version = ["py312"] # Set the Python version for Black and Mypy
+include = '\.pyi?'         # Include only Python files
+
+[tool.isort] # Isort configuration
+profile = "black" # Use Black for formatting
+line_length = 88  # Set the line length for Black
+py_version = 312  # Set the Python version for Mypy
+
+[tool.mypy] # Mypy configuration
+python_version = "3.12"    # Set the Python version for Mypy
+strict = true              # Enable stricter type checking
+warn_return_any = true     # Warn about potential return type issues
+warn_unused_configs = true # Warn about unused configuration settings
+
+[tool.ruff] # Ruff configuration
+target-version = "py312" # Set the Python version for Ruff
+line-length = 88 # Set the line length for Ruff
+lint.select = [ # Enable specific linting rules
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # Pyflakes
+  "I",   # isort
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "C90", # mccabe complexity
+]
+lint.ignore = [
+  "Q", # Ignore flake8-quotes to avoid conflicts with string constants
+]
